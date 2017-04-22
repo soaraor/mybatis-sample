@@ -1,7 +1,10 @@
 package com.souvc;
 
 import com.souvc.entity.Dept;
+import com.souvc.entity.Dept1;
+import com.souvc.entity.DeptMapper;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -10,6 +13,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 测试类
@@ -155,6 +159,106 @@ public class MybatisTest {
         for (Dept dept : list) {
             System.out.println(dept.getDeptno() + " " + dept.getDname() + " "
                     + dept.getLoc());
+        }
+        session.close();
+    }
+
+
+    /**
+     * 测试分页
+     * @throws IOException
+     */
+    @Test
+    public void testFindPage() throws IOException{
+        String conf = "SqlMapConfig.xml";
+        Reader reader =  Resources.getResourceAsReader(conf);
+        //创建SessionFactory对象
+        SqlSessionFactoryBuilder sfb = new SqlSessionFactoryBuilder();
+        SqlSessionFactory sf = sfb.build(reader);
+        //创建Session
+        SqlSession session = sf.openSession();
+
+        int offset = 2;//起点,从2开始
+        int limit = 2;//查几条
+        RowBounds rowBounds = new RowBounds(offset, limit);
+        List<Dept> list =  session.selectList("findAll",null,rowBounds);
+        for(Dept dept : list){
+            System.out.println(dept.getDeptno()+" "
+                    +dept.getDname()+" "
+                    +dept.getLoc());
+        }
+        session.close();
+    }
+
+
+    /**
+     * 返回部门对象
+     * @throws IOException
+     */
+    @Test
+    public void findDept() throws IOException{
+        String conf = "SqlMapConfig.xml";
+        Reader reader = Resources.getResourceAsReader(conf);
+        //创建SessionFactory对象
+        SqlSessionFactoryBuilder sfb = new SqlSessionFactoryBuilder();
+        SqlSessionFactory sf = sfb.build(reader);
+        //创建Session
+        SqlSession session = sf.openSession();
+
+        Map map = (Map)session.selectOne("findDept",10);
+        System.out.println(map.get("DEPTNO") +" "+map.get("DNAME"));
+
+        session.close();
+    }
+
+    /**
+     * 使用Mapper对Dept表操作案例
+     * @throws IOException
+     */
+    @Test
+    public void testDeptMapper() throws IOException{
+        String conf = "SqlMapConfig.xml";
+        Reader reader = Resources.getResourceAsReader(conf);
+        //创建SessionFactory对象
+        SqlSessionFactoryBuilder sfb =  new SqlSessionFactoryBuilder();
+        SqlSessionFactory sf = sfb.build(reader);
+        //创建Session
+        SqlSession session = sf.openSession();
+
+        DeptMapper mapper =  session.getMapper(DeptMapper.class);
+        //调用findAll方法
+        List<Dept> list = mapper.findAll();
+        for(Dept dept : list){
+            System.out.println(dept.getDeptno()+" "
+                    +dept.getDname()+" "
+                    +dept.getLoc());
+        }
+
+        session.close();
+    }
+
+
+    /**
+     * 测试自定义测试返回
+     * @throws IOException
+     */
+    @Test
+    public void testResultMap() throws IOException{
+        String conf = "SqlMapConfig.xml";
+        Reader reader = Resources.getResourceAsReader(conf);
+        //创建SessionFactory对象
+        SqlSessionFactoryBuilder sfb =  new SqlSessionFactoryBuilder();
+        SqlSessionFactory sf = sfb.build(reader);
+        //创建Session
+        SqlSession session = sf.openSession();
+
+        DeptMapper mapper = session.getMapper(DeptMapper.class);
+        //调用findAll方法
+        List<Dept1> list = mapper.findAll1();
+        for(Dept1 dept : list){
+            System.out.println(dept.getNo()+" "
+                    +dept.getName()+" "
+                    +dept.getLoc());
         }
         session.close();
     }

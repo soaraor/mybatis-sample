@@ -16,8 +16,10 @@ public interface DeptMapper {
     //根据ID查询部门
     public Dept findById(int id);
 
-    //查询全部
+    //查询Dept全部
     public List<Dept> findAll();
 
+    //查询Dept1全部
+    public List<Dept1> findAll1();
 
 }
