@@ -1,1 +1,1 @@
-#mybatis-sample
+#MyBatis 是支持定制化 SQL、存储过程以及高级映射的优秀的持久层框架
