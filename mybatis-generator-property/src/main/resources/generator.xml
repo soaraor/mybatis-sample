@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+	 <!-- 引入配置文件 -->  
+    <properties resource="mybatis-generator.properties"/> 
+    
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+
+		<!--自动实现Serializable接口-->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+
+		<!-- 去除自动生成的注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<!--数据库基本信息-->
+		<jdbcConnection driverClass="${mybatis.jdbcConnection.driverClass}"
+						connectionURL="${mybatis.jdbcConnection.connectionURL}"
+						userId="${mybatis.jdbcConnection.userId}"
+						password="${mybatis.jdbcConnection.password}">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!--生成实体类的位置以及包的名字-->
+		<javaModelGenerator targetPackage="${mybatis.javaModelGenerator.targetPackage}"
+							targetProject="src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+	    <!-- 生成用于查询的Mapper.xml -->
+		<sqlMapGenerator targetPackage="${mybatis.sqlMapGenerator.targetPackage}"
+			targetProject="src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 生成DAO的类文件以及配置文件 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="${mybatis.javaClientGenerator.targetPackage}"
+			targetProject="src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!--对应的表名，以及实体名-->
+		<table tableName="${mybatis.table.tableName}" domainObjectName="${mybatis.table.domainObjectName}"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="true" modelType="flat">
+		</table>
+
+	</context>
+
+</generatorConfiguration>
