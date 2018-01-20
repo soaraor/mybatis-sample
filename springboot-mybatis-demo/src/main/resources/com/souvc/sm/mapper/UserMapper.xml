@@ -1,0 +1,15 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD com.example.Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.souvc.sm.dao.UserDao">
+    <resultMap id = "result" type = "com.souvc.sm.entity.User">
+        <result property = "id" column = "id"/>
+        <result property = "name" column = "name"/>
+        <result property = "age" column = "age"/>
+        <result property = "email" column = "email"/>
+    </resultMap>
+    <select id = "findUserById" resultMap = "result">
+        SELECT * FROM t_users where id = #{id};
+    </select>
+</mapper>
